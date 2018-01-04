@@ -3,7 +3,7 @@
 //  ESPTouchSwift
 //
 //  Created by Bruno Horta on 03/01/2018.
-//  Copyright © 2018 VoidSteam. All rights reserved.
+//  Copyright © 2018 Bruno Horta. All rights reserved.
 //
 
 import UIKit
@@ -13,6 +13,8 @@ class ViewController: UIViewController, ESPTouchDelegate {
         print("DONE")
     }
     
+    
+    @IBOutlet var numberOfDevicesLabel: UILabel!
     @IBOutlet var passwordInputText: UITextField!
     @IBOutlet var ssidLabel: UILabel!
     var bssid: String?
@@ -25,6 +27,9 @@ class ViewController: UIViewController, ESPTouchDelegate {
             let  _: ESPTouchResult = self.executeForResult()
         }
     }
+    @IBAction func onNumberDevicesChange(_ sender: UISlider) {
+        numberOfDevicesLabel.text = Int8.init( sender.value).description
+    }
     
     func  executeForResult() -> ESPTouchResult{
     let esptouchTask = ESPTouchTask.init(apSsid: ssidLabel.text, andApBssid: self.bssid, andApPwd: self.passwordInputText.text)
@@ -33,5 +38,8 @@ class ViewController: UIViewController, ESPTouchDelegate {
         return (esptouchTask?.executeForResult())!
     }
   
+    @IBAction func send(_ sender: UIButton) {
+        self.sendSmartConfig()
+    }
 }
 
