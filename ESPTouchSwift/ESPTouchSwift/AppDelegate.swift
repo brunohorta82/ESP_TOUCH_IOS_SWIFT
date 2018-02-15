@@ -49,27 +49,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     func  fetchSsid()->String{
-        let ssidInfo = fetchNetInfo()
-        
-        return ssidInfo.value(forKey: "SSID") as! String
+        if let ssidInfo = fetchNetInfo(){
+            return ssidInfo.value(forKey: "SSID") as! String
+        }
+        return "Sem Internet"
     }
     
     func fetchBssid()->String{
-        let bssidInfo = fetchNetInfo()
-        return bssidInfo.value(forKey: "BSSID") as! String
+        if let bssidInfo = fetchNetInfo(){
+            return bssidInfo.value(forKey: "BSSID") as! String
+        }
+        return "Sem Internet"
     }
     
     
-    func fetchNetInfo()->NSDictionary
+    func fetchNetInfo()->NSDictionary?
     {
         let interfaceNames: NSArray = CNCopySupportedInterfaces()!
         
         var SSIDInfo : NSDictionary?
         for interfaceName in interfaceNames {
-            SSIDInfo =   CNCopyCurrentNetworkInfo(interfaceName as! CFString)!
+            if let x =   CNCopyCurrentNetworkInfo(interfaceName as! CFString){
+                SSIDInfo = x
+            }
         }
         
-        return SSIDInfo!;
+        return SSIDInfo
     }
 
 }

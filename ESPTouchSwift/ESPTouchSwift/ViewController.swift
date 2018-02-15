@@ -48,6 +48,7 @@ class ViewController: UIViewController, ESPTouchDelegate {
         
     }
     func sendSmartConfig(){
+       
         results.removeAll()
         DispatchQueue.global().async {
             self.esptouchTask = ESPTouchTask.init(apSsid: self.ssidLabel.text, andApBssid: self.bssid, andApPwd: self.passwordInputText.text)
@@ -58,6 +59,7 @@ class ViewController: UIViewController, ESPTouchDelegate {
             }
             
         }
+       
     }
     @IBAction func onNumberDevicesChange(_ sender: UISlider) {
         resultExpected = Int(sender.value)
@@ -68,8 +70,12 @@ class ViewController: UIViewController, ESPTouchDelegate {
   
 
     @IBAction func send(_ sender: UIButton) {
-        self.showAlertWithResult(title:"A pesquisar",message:"")
-        self.sendSmartConfig()
+        if  self.ssidLabel.text?.compare("Sem Internet").rawValue != 0{
+            self.showAlertWithResult(title:"A pesquisar",message:"")
+            self.sendSmartConfig()
+        }else{
+            print("Sem NET")
+        }
     }
    
     func showAlertWithResult(title : String,  message: String){
